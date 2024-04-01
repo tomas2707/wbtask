@@ -5,6 +5,8 @@ import (
 	"github.com/tomas2707/wbtask/repository"
 	"log/slog"
 	"net/http"
+	"net/mail"
+	"time"
 )
 
 // Service provides an api contracts to user-related operations.
@@ -31,6 +33,20 @@ func (s *Service) SaveUserHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		s.log.Error("Error decoding user data", "error", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	_, err = mail.ParseAddress(user.Email)
+	if err != nil {
+		s.log.Error("Invalid email address", "email", user.Email, "error", err)
+		http.Error(w, "Invalid email address: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	_, err = time.Parse(time.RFC3339, user.DateOfBirth)
+	if err != nil {
+		s.log.Error("Invalid date format", "date", user.DateOfBirth, "error", err)
+		http.Error(w, "Invalid date format: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
