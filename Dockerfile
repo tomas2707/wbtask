@@ -8,7 +8,7 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /app
 
 # Copy the binary from your host machine to the Docker image
-COPY main /app/
+COPY build/main /app/
 
 # Expose port 8080 for the application
 EXPOSE 8080
