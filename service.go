@@ -2,6 +2,7 @@ package wbtask
 
 import (
 	"encoding/json"
+	"github.com/google/uuid"
 	"github.com/tomas2707/wbtask/repository"
 	"log/slog"
 	"net/http"
@@ -33,6 +34,13 @@ func (s *Service) SaveUserHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		s.log.Error("Error decoding user data", "error", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	_, err = uuid.Parse(user.ID)
+	if err != nil {
+		s.log.Error("Invalid user id", "id", user.ID, "error", err)
+		http.Error(w, "Invalid user id: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
