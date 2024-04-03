@@ -8,6 +8,14 @@ To run the application and its dependencies:
 docker-compose up --build
 ```
 
+## Running the integration tests
+
+To run the integration tests:
+
+```bash
+docker-compose -f docker-compose-test.yaml up --abort-on-container-exit
+```
+
 ## API Endpoints
 ### Save User
 To create a new user:
