@@ -1,0 +1,26 @@
+name: Integration Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  integration-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Compose
+        run: docker-compose -f docker-compose-test.yaml up -d
+
+      - name: Run tests
+        run: docker-compose -f docker-compose-test.yaml run go-test
+
+      - name: Clean up
+        run: docker-compose -f docker-compose-test.yaml down
