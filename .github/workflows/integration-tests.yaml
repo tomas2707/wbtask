@@ -16,6 +16,12 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
+      - name: Install Docker Compose
+        run: |
+          COMPOSE_URL="https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-$(uname -s)-$(uname -m)"
+          sudo curl -L "$COMPOSE_URL" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
       - name: Set up Docker Compose
         run: docker-compose -f docker-compose-test.yaml up -d
 
