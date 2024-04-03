@@ -24,6 +24,13 @@ func NewService(log *slog.Logger, userRepo repository.UserManager) *Service {
 	}
 }
 
+func (s *Service) Router() *http.ServeMux {
+	mux := http.NewServeMux()
+	mux.HandleFunc("POST /save", s.SaveUserHandler)
+	mux.HandleFunc("GET /{id}", s.GetUserHandler)
+	return mux
+}
+
 // SaveUserHandler is an HTTP handler for saving a new user to the database.
 // It reads the user details from the request body and attempts to create a new user record.
 // If successful, it responds with the created user data.

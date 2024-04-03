@@ -27,10 +27,7 @@ func main() {
 	userRepo := gorm.NewUserRepository(db)
 	userService := wbtask.NewService(logger, userRepo)
 
-	http.HandleFunc("POST /save", userService.SaveUserHandler)
-	http.HandleFunc("GET /{id}", userService.GetUserHandler)
-
-	err = http.ListenAndServe(":8080", nil)
+	err = http.ListenAndServe(":8080", userService.Router())
 	if err != nil {
 		panic(err)
 	}
