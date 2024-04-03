@@ -1,0 +1,22 @@
+version: '3.3'
+services:
+  go-test:
+    image: golang:1.22.1-alpine
+    environment:
+      DB_HOST: test-db
+      DB_USER: testuser
+      DB_NAME: testdb
+      DB_SSLMODE: disable
+      DB_PASSWORD: testpass
+    volumes:
+      - $PWD:/app
+    working_dir: /app
+    command: ["go", "test", "./...", "-v"]
+    depends_on:
+      - test-db
+  test-db:
+    image: postgres:16.2-alpine
+    environment:
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpass
+      POSTGRES_DB: testdb
